@@ -20,7 +20,8 @@ if __name__ == '__main__':
                 numbers.reverse()
             if is_increasing(numbers):
                 safe_list_count += 1
-            if is_almost_increasing(numbers):
+                safe_list_count_with_one_bad += 1
+            elif is_almost_increasing(numbers):
                 safe_list_count_with_one_bad += 1
     print(safe_list_count)  # Output the count of safe lists
     print(safe_list_count_with_one_bad)  # Output the count of safe lists with one bad element
