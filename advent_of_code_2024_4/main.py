@@ -76,47 +76,28 @@ def find_xmas_patterns(grid):
 
 
 if __name__ == '__main__':
-    grid = [
-        ['.', '.', 'X', '.', '.', '.'],
-        ['.', 'S', 'A', 'M', 'X', '.'],
-        ['.', 'A', '.', '.', 'A', '.'],
-        ['X', 'M', 'A', 'S', '.', 'S'],
-        ['.', 'X', '.', '.', '.', '.']
-    ]
-
+    grid = load_grid_from_file('example_1.txt')
     target_word = "XMAS"
     occurrences = find_all_occurrences(grid, target_word)
-    print(f"Number of occurrences of '{target_word}':", occurrences)
+    print(f"Number of occurrences in example 1 of '{target_word}':", occurrences)
 
-    example_path = 'example_input.txt'
+    example_path = 'example_2.txt'
     grid = load_grid_from_file(example_path)
     target_word = "XMAS"
     occurrences = find_all_occurrences(grid, target_word)
-    print(f"Number of occurrences of '{target_word}':", occurrences)
+    print(f"Number of occurrences in example 2 of '{target_word}':", occurrences)
 
     file_path = 'input.txt'
     grid = load_grid_from_file(file_path)
     occurrences = find_all_occurrences(grid, target_word)
-    print(f"Number of occurrences of '{target_word}':", occurrences)
+    print(f"Number of occurrences in input of '{target_word}':", occurrences)
 
-    # Example usage
-    grid = [
-        ['.', 'M', '.', 'S', '.', '.', '.', '.', '.', '.'],
-        ['.', '.', 'A', '.', '.', 'M', 'S', 'M', 'S', '.'],
-        ['.', 'M', '.', 'S', '.', 'M', 'A', 'A', '.', '.'],
-        ['.', '.', 'A', '.', 'A', 'S', 'M', 'S', 'M', '.'],
-        ['.', 'M', '.', 'S', '.', 'M', '.', '.', '.', '.'],
-        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-        ['S', '.', 'S', '.', 'S', '.', 'S', '.', 'S', '.'],
-        ['.', 'A', '.', 'A', '.', 'A', '.', 'A', '.', '.'],
-        ['M', '.', 'M', '.', 'M', '.', 'M', '.', 'M', '.'],
-        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ]
-
+    # Part 2
+    grid = load_grid_from_file('example_3.txt')
     occurrences = find_xmas_patterns(grid)
-    print(f"Number of X-MAS patterns:", occurrences)
+    print(f"Number of X-MAS patterns in example 3:", occurrences)
 
     file_path = 'input.txt'
     grid = load_grid_from_file(file_path)
     occurrences = find_xmas_patterns(grid)
-    print(f"Number of X-MAS patterns:", occurrences)
+    print(f"Number of X-MAS patterns in input:", occurrences)
