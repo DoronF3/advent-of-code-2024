@@ -52,6 +52,18 @@ def count_robots_in_quadrants(robots, grid_size, steps):
     return quadrants[0] * quadrants[1] * quadrants[2] * quadrants[3]
 
 
+from statistics import variance as var
+
+
+def find_tree(W, H, robots):
+    # Find the time `t` that minimizes variance in x and y directions
+    bx = min(range(W), key=lambda t: var((s + t * v) % W for ((s, _), (v, _)) in robots))
+    by = min(range(H), key=lambda t: var((s + t * v) % H for ((_, s), (_, v)) in robots))
+
+    # Compute the result
+    return bx + ((pow(W, -1, H) * (by - bx)) % H) * W
+
+
 # Example usage
 if __name__ == "__main__":
     input_file = "example_1.txt"
@@ -67,3 +79,9 @@ if __name__ == "__main__":
     steps = 100  # Number of steps to simulate
     safety_factor = count_robots_in_quadrants(robots, grid_size, steps)
     print(f"Safety factor after {steps} seconds: {safety_factor}")
+
+    input_file = "input.txt"
+    robots = parse_input(input_file)
+    grid_size = (101, 103)
+    steps = 100  # Number of steps to simulate
+    print(f"Time to find the tree: {find_tree(*grid_size, robots)}")
