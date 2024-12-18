@@ -10,14 +10,14 @@ def read_input_file(file_path):
 def bfs_shortest_path(grid_size, falling_bytes_set, start, end):
     """Finds the shortest path using BFS with falling bytes set as obstacles."""
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, down, left, right
-    queue = deque([(start[0], start[1], 0)])  # (x, y, steps)
+    queue = deque([(start[0], start[1], 0, [])])  # (x, y, steps)
     visited = set([start])
 
     while queue:
-        x, y, steps = queue.popleft()
+        x, y, steps, curr_path = queue.popleft()
 
         if (x, y) == end:
-            return steps
+            return steps, curr_path
 
         for dx, dy in directions:
             nx, ny = x + dx, y + dy
@@ -25,20 +25,21 @@ def bfs_shortest_path(grid_size, falling_bytes_set, start, end):
             if 0 <= nx < grid_size and 0 <= ny < grid_size and (nx, ny) not in visited:
                 if (nx, ny) not in falling_bytes_set:  # Check if the byte has fallen at this position
                     visited.add((nx, ny))
-                    queue.append((nx, ny, steps + 1))
+                    queue.append((nx, ny, steps + 1, curr_path + [(nx, ny)]))
 
-    return -1  # Return -1 if no path is found
+    return -1, []  # Return -1 if no path is found
 
 
-def find_blocking_byte(grid_size, falling_bytes, time, falling_bytes_set):
+def find_blocking_byte(grid_size, falling_bytes, time, falling_bytes_set, path):
     """Finds the byte that blocks the exit by simulating the falling bytes."""
     while True:
         falling_bytes_set.add(falling_bytes[time])
 
-        # Check the shortest path for this time step
-        result = bfs_shortest_path(grid_size, falling_bytes_set, (0, 0), (grid_size - 1, grid_size - 1))
-        if result == -1:  # If no path is found, the byte at this time is blocking the exit
-            return falling_bytes[time]  # Return the blocking byte position
+        if falling_bytes[time] in path:
+            # Check the shortest path for this time step
+            result, path = bfs_shortest_path(grid_size, falling_bytes_set, (0, 0), (grid_size - 1, grid_size - 1))
+            if result == -1:  # If no path is found, the byte at this time is blocking the exit
+                return falling_bytes[time]  # Return the blocking byte position
         time += 1
 
 
@@ -48,11 +49,11 @@ def process_input(file_path, grid_size, time):
 
     # Calculate the shortest path
     falling_bytes_set = set(falling_bytes[:time])  # Only store bytes up to the given time
-    shortest_path_length = bfs_shortest_path(grid_size, falling_bytes_set, (0, 0), (grid_size - 1, grid_size - 1))
+    shortest_path_length, path = bfs_shortest_path(grid_size, falling_bytes_set, (0, 0), (grid_size - 1, grid_size - 1))
     print(f"The minimum number of steps needed to reach the exit is: {shortest_path_length}")
 
     # Find the blocking byte
-    blocking_byte = find_blocking_byte(grid_size, falling_bytes, time, falling_bytes_set)
+    blocking_byte = find_blocking_byte(grid_size, falling_bytes, time, falling_bytes_set, path)
     print(f"The byte blocking the exit is at: {blocking_byte}")
 
 
